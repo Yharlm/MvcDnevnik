@@ -1,3 +1,7 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MvcDnevnik.Models;
+using MvcDnevnik.Data;
 namespace MvcDnevnik
 {
     public class Program
@@ -5,12 +9,19 @@ namespace MvcDnevnik
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddDbContext<MvcDnevnikContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("MvcDnevnikContext") ?? throw new InvalidOperationException("Connection string 'MvcDnevnikContext' not found.")));
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
 
+                SeedData.Initialize(services);
+            }
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
