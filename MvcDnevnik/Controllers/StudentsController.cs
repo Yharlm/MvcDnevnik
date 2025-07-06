@@ -10,30 +10,22 @@ using MvcDnevnik.Models;
 
 namespace MvcDnevnik.Controllers
 {
-    public class GradesController : Controller
+    public class StudentsController : Controller
     {
         private readonly MvcDnevnikContext _context;
 
-        public GradesController(MvcDnevnikContext context)
+        public StudentsController(MvcDnevnikContext context)
         {
             _context = context;
         }
 
-<<<<<<< HEAD
-=======
-
-        public IActionResult Check()
-        {
-            return View();
-        }
->>>>>>> 8822f4abcd7cb05dbba53f4a283da55bb9cd3478
-        // GET: Grades
+        // GET: Students
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Grade.ToListAsync());
+            return View(await _context.Student.ToListAsync());
         }
 
-        // GET: Grades/Details/5
+        // GET: Students/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -41,54 +33,39 @@ namespace MvcDnevnik.Controllers
                 return NotFound();
             }
 
-            var grade = await _context.Grade
+            var student = await _context.Student
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (grade == null)
+            if (student == null)
             {
                 return NotFound();
             }
 
-            return View(grade);
+            return View(student);
         }
 
-        // GET: Grades/Create
+        // GET: Students/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Grades/Create
+        // POST: Students/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Value,Date,Description")] Grade grade)
+        public async Task<IActionResult> Create([Bind("ID,Name")] Student student)
         {
-<<<<<<< HEAD
-            Request.Form.TryGetValue("Student_ID", out var student_ID);
-            Request.Form.TryGetValue("Subject_ID", out var subject_ID);
-
-            if (int.TryParse(student_ID, out int studentId) && int.TryParse(subject_ID, out int subjectId))
-            {
-                grade.Student = await _context.Student.FindAsync(studentId);
-                grade.Subject = await _context.Subject.FindAsync(subjectId);
-            }
-=======
->>>>>>> 8822f4abcd7cb05dbba53f4a283da55bb9cd3478
             if (ModelState.IsValid)
             {
-                _context.Add(grade);
+                _context.Add(student);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(grade);
+            return View(student);
         }
 
-<<<<<<< HEAD
-        //// GET: Grades/Edit/5
-=======
-        // GET: Grades/Edit/5
->>>>>>> 8822f4abcd7cb05dbba53f4a283da55bb9cd3478
+        // GET: Students/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -96,28 +73,22 @@ namespace MvcDnevnik.Controllers
                 return NotFound();
             }
 
-            var grade = await _context.Grade.FindAsync(id);
-            if (grade == null)
+            var student = await _context.Student.FindAsync(id);
+            if (student == null)
             {
                 return NotFound();
             }
-            return View(grade);
+            return View(student);
         }
 
-        // POST: Grades/Edit/5
+        // POST: Students/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> 8822f4abcd7cb05dbba53f4a283da55bb9cd3478
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Value,Date,Description")] Grade grade)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name")] Student student)
         {
-            if (id != grade.ID)
+            if (id != student.ID)
             {
                 return NotFound();
             }
@@ -126,12 +97,12 @@ namespace MvcDnevnik.Controllers
             {
                 try
                 {
-                    _context.Update(grade);
+                    _context.Update(student);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GradeExists(grade.ID))
+                    if (!StudentExists(student.ID))
                     {
                         return NotFound();
                     }
@@ -142,10 +113,10 @@ namespace MvcDnevnik.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(grade);
+            return View(student);
         }
 
-        // GET: Grades/Delete/5
+        // GET: Students/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -153,34 +124,34 @@ namespace MvcDnevnik.Controllers
                 return NotFound();
             }
 
-            var grade = await _context.Grade
+            var student = await _context.Student
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (grade == null)
+            if (student == null)
             {
                 return NotFound();
             }
 
-            return View(grade);
+            return View(student);
         }
 
-        // POST: Grades/Delete/5
+        // POST: Students/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var grade = await _context.Grade.FindAsync(id);
-            if (grade != null)
+            var student = await _context.Student.FindAsync(id);
+            if (student != null)
             {
-                _context.Grade.Remove(grade);
+                _context.Student.Remove(student);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool GradeExists(int id)
+        private bool StudentExists(int id)
         {
-            return _context.Grade.Any(e => e.ID == id);
+            return _context.Student.Any(e => e.ID == id);
         }
     }
 }

@@ -15,5 +15,10 @@ namespace MvcDnevnik.Data
         }
 
         public DbSet<MvcDnevnik.Models.Grade> Grade { get; set; } = default!;
+<<<<<<< HEAD
+        public DbSet<MvcDnevnik.Models.Student> Student { get; set; } = default!;
+        public DbSet<MvcDnevnik.Models.Subject> Subject { get; set; } = default!;
+=======
+>>>>>>> 8822f4abcd7cb05dbba53f4a283da55bb9cd3478
     }
 }

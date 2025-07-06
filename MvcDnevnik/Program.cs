@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+<<<<<<< HEAD
+=======
 using MvcDnevnik.Models;
+>>>>>>> 8822f4abcd7cb05dbba53f4a283da55bb9cd3478
 using MvcDnevnik.Data;
 namespace MvcDnevnik
 {
