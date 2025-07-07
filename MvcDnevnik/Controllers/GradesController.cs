@@ -27,7 +27,11 @@ namespace MvcDnevnik.Controllers
         // GET: Grades
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Grades.ToListAsync());
+            var grades = from g in _context.Grades
+                         where g.Student.ID == 1
+                         select g;
+
+            return View(grades.ToList());
         }
 
         // GET: Grades/Details/5
