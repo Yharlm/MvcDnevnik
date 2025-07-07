@@ -27,7 +27,7 @@ namespace MvcDnevnik.Controllers
         // GET: Grades
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Grade.ToListAsync());
+            return View(await _context.Grades.ToListAsync());
         }
 
         // GET: Grades/Details/5
@@ -38,7 +38,7 @@ namespace MvcDnevnik.Controllers
                 return NotFound();
             }
 
-            var grade = await _context.Grade
+            var grade = await _context.Grades
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (grade == null)
             {
@@ -78,7 +78,7 @@ namespace MvcDnevnik.Controllers
                 return NotFound();
             }
 
-            var grade = await _context.Grade.FindAsync(id);
+            var grade = await _context.Grades.FindAsync(id);
             if (grade == null)
             {
                 return NotFound();
@@ -132,7 +132,7 @@ namespace MvcDnevnik.Controllers
                 return NotFound();
             }
 
-            var grade = await _context.Grade
+            var grade = await _context.Grades
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (grade == null)
             {
@@ -147,10 +147,10 @@ namespace MvcDnevnik.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var grade = await _context.Grade.FindAsync(id);
+            var grade = await _context.Grades.FindAsync(id);
             if (grade != null)
             {
-                _context.Grade.Remove(grade);
+                _context.Grades.Remove(grade);
             }
 
             await _context.SaveChangesAsync();
@@ -159,7 +159,7 @@ namespace MvcDnevnik.Controllers
 
         private bool GradeExists(int id)
         {
-            return _context.Grade.Any(e => e.ID == id);
+            return _context.Grades.Any(e => e.ID == id);
         }
     }
 }
