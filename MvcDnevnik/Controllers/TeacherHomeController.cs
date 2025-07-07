@@ -10,8 +10,18 @@ namespace MvcDnevnik.Controllers
     {
         private readonly MvcDnevnikContext _context = context;
 
-        
 
+        public async Task<IActionResult> Subject(int id)
+        {
+            var user = _context.User.FirstOrDefault();
+            user.Temp = id.ToString() + '/'; // Set a default value for Temp, if needed
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
+
+            return View(context.Subject);
+
+        }
         public async Task<IActionResult> Index(int id)
         {
             var user = _context.User.FirstOrDefault();
@@ -28,7 +38,7 @@ namespace MvcDnevnik.Controllers
         public async Task<IActionResult> Select(int id)
         {
             var user = _context.User.FirstOrDefault();
-            user.Temp = id.ToString() + '/'; // Set a default value for Temp, if needed
+            user.Temp += id.ToString(); // Set a default value for Temp, if needed
             _context.Update(user);
             await _context.SaveChangesAsync();
 
@@ -49,12 +59,16 @@ namespace MvcDnevnik.Controllers
         public async Task<IActionResult> Create([Bind("ID,Value,Date,Description")] Grade grade)
 		{
             var user = _context.User.FirstOrDefault();
-            grade.Subject.ID = user.Temp.Split('/')[0];
-            grade.Student.ID = user.Temp.Split('/')[1];
+            int subjectId = int.Parse(user.Temp.Split('/')[0]); // Assuming Temp is formatted as "subjectId/studentId"
+            int studentId = int.Parse(user.Temp.Split('/')[1]); // Assuming Temp is formatted as "subjectId/studentId"
+
+            grade.Subject = _context.Subject.FirstOrDefault(s => s.ID == subjectId);
+            grade.Student = _context.Student.FirstOrDefault(s => s.ID == studentId);
+
+           
 
 
-            if (ModelState.IsValid)
-			{
+            
                 
                 
 
@@ -62,8 +76,8 @@ namespace MvcDnevnik.Controllers
                 _context.Add(grade);
 				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));
-			}
-			return View(grade);
+			
+			
 		}
 	}
 }

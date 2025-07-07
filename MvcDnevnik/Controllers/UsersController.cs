@@ -54,9 +54,8 @@ namespace MvcDnevnik.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Password,Role,Email,PhoneNumber")] User user)
+        public async Task<IActionResult> Create([Bind("ID,Name,Password,Role,Email,PhoneNumber,Temp")] User user)
         {
-            user.Temp = "TempValue"; // Set a default value for Temp, if needed
             if (ModelState.IsValid)
             {
                 _context.Add(user);
