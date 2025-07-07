@@ -12,8 +12,14 @@ namespace MvcDnevnik.Controllers
 
         
 
-        public IActionResult Index(int sub)
+        public async Task<IActionResult> Index(int id)
         {
+            var user = _context.User.FirstOrDefault();
+            user.Temp = id.ToString() + '/'; // Set a default value for Temp, if needed
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
+
             return View(context.Student);
 
         }
@@ -21,7 +27,11 @@ namespace MvcDnevnik.Controllers
         // " asp-route-id="@item.ID" " - turns id into a route parameter(sub-page or Component?)
         public async Task<IActionResult> Select(int id)
         {
-            ViewData["Student"] = _context.Student.Find(id);
+            var user = _context.User.FirstOrDefault();
+            user.Temp = id.ToString() + '/'; // Set a default value for Temp, if needed
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
             var list = from s in _context.Grade
                        where s.Student.ID == id
 					   select s;
@@ -38,13 +48,18 @@ namespace MvcDnevnik.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Value,Date,Description")] Grade grade)
 		{
-            
+            var user = _context.User.FirstOrDefault();
+            grade.Subject.ID = user.Temp.Split('/')[0];
+            grade.Student.ID = user.Temp.Split('/')[1];
+
+
             if (ModelState.IsValid)
 			{
                 
-
                 
-				_context.Add(grade);
+
+
+                _context.Add(grade);
 				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));
 			}
