@@ -10,6 +10,8 @@ namespace MvcDnevnik.Controllers
     {
         private readonly MvcDnevnikContext _context = context;
 
+        
+
 
         public async Task<IActionResult> Subject(int id)
         {
@@ -30,12 +32,33 @@ namespace MvcDnevnik.Controllers
             _context.Update(user);
             await _context.SaveChangesAsync();
 
+            var list = new List<Student_grade>();
+			
 
-            return View(context.Student);
+			foreach (var s in _context.Student)
+            {
+				var grades = from g in _context.Grade
+							 where g.Subject.ID == id
+                             where g.Student.ID == s.ID
+							 select g;
+				list.Add(new Student_grade()
+				{
+					Student = s,
+					Grades = grades.ToList()
+				});
+
+			}
+			
+
+
+
+			return View(list);
 
         }
 
         // " asp-route-id="@item.ID" " - turns id into a route parameter(sub-page or Component?)
+
+        //Student list
         public async Task<IActionResult> Select(int id)
         {
             var user = _context.User.FirstOrDefault();
@@ -52,9 +75,49 @@ namespace MvcDnevnik.Controllers
 
             var list = from s in _context.Grade
                        where s.Student.ID == id
-					   select s;
+                       select s;
 
-            
+
+            return View(list);
+        }
+        public async Task<IActionResult> SelectS(int id)
+        {
+            var user = _context.User.FirstOrDefault();
+            if (user.Temp.Split('/').Length == 1)
+            {
+                user.Temp = user.Temp + '/' + id.ToString();
+            }
+            else
+            {
+                user.Temp = user.Temp.Split("/")[0] + '/' + id.ToString();
+            }
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
+            //int subjectId = int.Parse(user.Temp.Split('/')[0]); // Assuming Temp is formatted as "subjectId/studentId"
+
+            //var grades = from s in _context.Grade
+            //             where s.Subject.ID == subjectId
+
+
+            //             select s;
+            //List<Student_grade> GradeList =new List<Student_grade>();
+            //foreach (var s in _context.Student)
+            //{
+            //    GradeList.Add(new Student_grade()
+            //    {
+            //        student = s,
+            //        grades = grades.Where(g => g.Student.ID == s.ID).ToList()
+            //    });
+            //}
+
+            var list = from s in _context.Student
+                       select s;
+                       
+
+
+
+
             return View(list);
         }
 

@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    
 }
 
 <div class="text-center">
@@ -8,4 +9,9 @@
     <p>Learn about <a href="https://localhost:7208/Subjects">Subjects</a>.</p>
     <p>Learn about <a href="https://localhost:7208/Students">Students</a>.</p>
     <p>Learn about <a href="/TeacherHome/Subject">Teachers</a>.</p>
+    <button asp-action="Cook" >Cokie test</button>
+    @foreach (var item in ViewBag.Names)
+	{
+		<p>@item</p>
+	}
 </div>

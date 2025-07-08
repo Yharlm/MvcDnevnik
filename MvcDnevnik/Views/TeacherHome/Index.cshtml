@@ -9,9 +9,22 @@
 <h1>Students list goes here</h1>
 @foreach (var item in Model)
 {
+    <h1>
+        @item.Student.Name|  @foreach (var g in item.Grades)
+        {
+            @g.Value
 
-    <a asp-action="Select" asp-route-id="@item.ID">Select @item.Name | @item.ID</a>
-    <br>
-    
+            <span>|</span>
+
+            
+        }
+        
+    </h1>
+
+
+
 }
+
+
+
 
