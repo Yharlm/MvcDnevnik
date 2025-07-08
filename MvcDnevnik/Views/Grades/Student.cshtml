@@ -1,0 +1,33 @@
+﻿@model IEnumerable<MvcDnevnik.Models.SubjectGrade>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+
+
+
+</div>
+
+
+<table>
+    
+@foreach (var item in Model.Select(s => s.Subject).Distinct())
+{
+        <tr>
+            <td>
+                @item
+            </td>
+            <td>
+                @foreach (var test in Model.Where(m => m.Subject == item).Select(m => m.Grade))
+                {
+                    @test
+                }
+            </td>
+
+        </tr>
+}
+
+</table>

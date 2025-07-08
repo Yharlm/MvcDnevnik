@@ -165,5 +165,26 @@ namespace MvcDnevnik.Controllers
         {
             return _context.Grades.Any(e => e.ID == id);
         }
+
+        public IActionResult Student(int id)//this is id of the student
+        {
+            var query = from grade in _context.Grades
+                        join subject in _context.Subjects on grade.Subject.ID equals subject.ID
+                        where grade.Student.ID == id
+                        select new SubjectGrade{
+                            Subject = subject.Name,
+                            SubjectId = subject.ID,
+                            Grade = grade.Value, 
+                            GradeType = grade.Type
+                        };
+
+            List<SubjectGrade> resultList = query.ToList();
+            var grades = resultList.Select(g => g.Subject).Distinct().ToList();
+
+            ViewData["grades"] =  grades;
+
+            return View(resultList);
+        }
+
     }
 }
