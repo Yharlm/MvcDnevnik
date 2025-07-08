@@ -14,14 +14,14 @@
 
 <table>
     
-@foreach (var item in Model.Select(s => s.Subject).Distinct())
-{
+    @foreach (var item in Model.Select(s => new {Subject = s.Subject, SubjectId = s.SubjectId}).Distinct())
+    {
         <tr>
             <td>
-                @item
+                @item.Subject
             </td>
             <td>
-                @foreach (var test in Model.Where(m => m.Subject == item).Select(m => m.Grade))
+                @foreach (var test in Model.Where(m => m.SubjectId == item.SubjectId).Select(m => m.Grade))
                 {
                     @test
                 }
