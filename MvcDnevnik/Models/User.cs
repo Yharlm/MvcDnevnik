@@ -17,6 +17,7 @@ namespace MvcDnevnik.Models
 
         public string PhoneNumber { get; set; }
         [AllowNull]
+        [MinLength(0)]
         public string Temp { get; set; }
         
 
