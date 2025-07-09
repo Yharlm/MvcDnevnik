@@ -28,7 +28,7 @@ namespace MvcDnevnik.Controllers
         public async Task<IActionResult> Index()
         {
             var grades = from g in _context.Grades
-                         where g.Student.ID == 1
+                         //where g.Student.ID == 1
                          select g;
 
             return View(grades.ToList());
@@ -175,7 +175,8 @@ namespace MvcDnevnik.Controllers
                             Subject = subject.Name,
                             SubjectId = subject.ID,
                             Grade = grade.Value, 
-                            GradeType = grade.Type
+                            GradeType = grade.Type,
+                            date = grade.Date,
                         };
 
             List<SubjectGrade> resultList = query.ToList();
