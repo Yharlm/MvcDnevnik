@@ -1,149 +1,80 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MvcDnevnik.Data;
 using MvcDnevnik.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.SignalR;
+using SessionExtensions = MvcDnevnik.Models.SessionExtensions;
 
 namespace MvcDnevnik.Controllers
 {
     public class TeacherHomeController(MvcDnevnikContext context) : Controller
     {
-        private readonly MvcDnevnikContext _context = context;
-
         
 
 
-        public async Task<IActionResult> Subject(int id)
+        private readonly MvcDnevnikContext _context = context;
+
+
+        public IActionResult Index()
         {
-            var user = _context.User.FirstOrDefault();
-            user.Temp = id.ToString() + '/'; // Set a default value for Temp, if needed
-            _context.Update(user);
-            await _context.SaveChangesAsync();
 
-
-            return View(context.Subject);
-
+            return View(_context.Subject);
         }
-        public async Task<IActionResult> Index(int id)
-        {
-            var user = _context.User.FirstOrDefault();
-            user.Temp = id.ToString() + '/'; // Set a default value for Temp, if needed
 
-            _context.Update(user);
-            await _context.SaveChangesAsync();
+        public async Task<IActionResult> Subject(int Sub)
+        {
+            HttpContext.Session.SetObject<int>("SubjectID", Sub);
+
+
 
             var list = new List<Student_grade>();
-			
 
-			foreach (var s in _context.Student)
+
+            foreach (var s in _context.Student)
             {
-				var grades = from g in _context.Grade
-							 where g.Subject.ID == id
+                var grades = from g in _context.Grade
+                             where g.Subject.ID == Sub
                              where g.Student.ID == s.ID
-							 select g;
-				list.Add(new Student_grade()
-				{
-					Student = s,
-					Grades = grades.ToList()
-				});
+                             select g;
+                list.Add(new Student_grade()
+                {
+                    Student = s,
+                    Grades = grades.ToList()
+                });
 
-			}
-			
-
-
-
-			return View(list);
-
-        }
-
-        // " asp-route-id="@item.ID" " - turns id into a route parameter(sub-page or Component?)
-
-        //Student list
-        public async Task<IActionResult> Select(int id)
-        {
-            var user = _context.User.FirstOrDefault();
-            if (user.Temp.Split('/').Length == 1)
-            {
-                user.Temp = user.Temp + '/' + id.ToString();
             }
-            else
-            {
-                user.Temp = user.Temp.Split("/")[0] + '/' + id.ToString();
-            }
-            _context.Update(user);
-            await _context.SaveChangesAsync();
-
-            var list = from s in _context.Grade
-                       where s.Student.ID == id
-                       select s;
-
 
             return View(list);
+
         }
-        public async Task<IActionResult> SelectS(int id)
+
+        public IActionResult CreateRedirect(int Stu)
         {
-            var user = _context.User.FirstOrDefault();
-            if (user.Temp.Split('/').Length == 1)
-            {
-                user.Temp = user.Temp + '/' + id.ToString();
-            }
-            else
-            {
-                user.Temp = user.Temp.Split("/")[0] + '/' + id.ToString();
-            }
-            _context.Update(user);
-            await _context.SaveChangesAsync();
-
-            //int subjectId = int.Parse(user.Temp.Split('/')[0]); // Assuming Temp is formatted as "subjectId/studentId"
-
-            //var grades = from s in _context.Grade
-            //             where s.Subject.ID == subjectId
-
-
-            //             select s;
-            //List<Student_grade> GradeList =new List<Student_grade>();
-            //foreach (var s in _context.Student)
-            //{
-            //    GradeList.Add(new Student_grade()
-            //    {
-            //        student = s,
-            //        grades = grades.Where(g => g.Student.ID == s.ID).ToList()
-            //    });
-            //}
-
-            var list = from s in _context.Student
-                       select s;
-                       
-
-
-
-
-            return View(list);
+            HttpContext.Session.SetObject<int>("StudentID", Stu);
+            return RedirectToAction(nameof(Create));
         }
 
-		public IActionResult Create()
-		{
-			return View();
-		}
+        public IActionResult Create()
+        {
+            return View();
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Value,Date,Description")] Grade grade)
-		{
+        {
             var user = _context.User.FirstOrDefault();
-            
-            int subjectId = int.Parse(user.Temp.Split('/')[0]); // Assuming Temp is formatted as "subjectId/studentId"
-            int studentId = int.Parse(user.Temp.Split('/')[1]); // Assuming Temp is formatted as "subjectId/studentId"
-            user.Temp = ""; // Clear Temp after using it to avoid confusion in future requests
-            _context.Update(user);
-            grade.Subject = _context.Subject.FirstOrDefault(s => s.ID == subjectId);
-            grade.Student = _context.Student.FirstOrDefault(s => s.ID == studentId);
 
-            if(_context.Student.Contains(grade.Student) && _context.Subject.Contains(grade.Subject))
+            // Assuming Temp is formatted as "subjectId/studentId"
+            int StudentID = HttpContext.Session.GetObject<int>("StudentID");
+            int SubjectID = HttpContext.Session.GetObject<int>("SubjectID"); // Assuming Temp is formatted as "subjectId/studentId"
+
+            grade.Subject = _context.Subject.FirstOrDefault(s => s.ID == SubjectID);
+            grade.Student = _context.Student.FirstOrDefault(s => s.ID == StudentID);
+
+            if (_context.Student.Contains(grade.Student) && _context.Subject.Contains(grade.Subject))
             {
                 _context.Add(grade);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-
+                return Redirect("/TeacherHome/Subject?Sub=" + SubjectID);
 
             }
             else
@@ -152,9 +83,9 @@ namespace MvcDnevnik.Controllers
                 return View(grade);
             }
 
-            
-			
-			
-		}
-	}
+
+
+
+        }
+    }
 }

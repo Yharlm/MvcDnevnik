@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Microsoft.AspNetCore.Http;
 
 namespace MvcDnevnik.Cookies
 {
@@ -6,6 +7,11 @@ namespace MvcDnevnik.Cookies
     {
         private const String CookieKey = "Word";
         private const string delimiter = "-";
+
+
+        //Response - Send
+        //Request  - Take
+
 
         private IRequestCookieCollection RequestCookies;
 
@@ -50,6 +56,7 @@ namespace MvcDnevnik.Cookies
 
         public void Clear()
         {
+            if (GetWords().Length > 0)
             ResponseCookies.Delete(CookieKey);
         }
 
