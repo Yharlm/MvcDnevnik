@@ -72,6 +72,15 @@ public static class SeedData
                     Type = GradeType.SEMESTER_TWO,
                     Student = neznaiko,
                     Subject = math
+                },
+                new Grade
+                {
+                    Value = 3,
+                    Date = DateTime.Parse("2023-09-01"),
+                    Description = "",
+                    Type = GradeType.CURRENT,
+                    Student = neznaiko,
+                    Subject = physics
                 }
 
             );

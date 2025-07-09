@@ -5,29 +5,78 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">Оценки</h1>
+
+    <table class="table table-bordered table-hover table-striped" id="tableGrades">
+    <thead>
+        <tr class="tableHeadersFooters">
+            <th rowspan="2" class="thinTableColumn">№</th>
+            <th rowspan="2"> Предмет </th>
+            <th colspan="2" class="solid-left-border term1   clickable_grade_cell">
+                <a href="#" id="hideTerm1" title="Скрий първи срок" class="hideGradeBtn"><i
+                        class="far fa-minus-square"></i></a>
+                <span>Първи срок</span>
+            </th>
+            <th colspan="2" class="solid-left-border term2   clickable_grade_cell">
+                <a href="#" id="hideTerm2" title="Скрий втори срок" class="hideGradeBtn"><i
+                        class="far fa-minus-square"></i></a>
+                <span>Втори срок</span>
+            </th>
+            <th rowspan="2" class="thinTableColumn annualAssessment emptyExpandColumn solid-left-border"
+                style="min-width: 2%;">
+                <a title="localization.Godishni_otsenki" class="showGradeBtn"><span>Годишна</span></a>
+            </th>
+        </tr>
+        <tr class="tableHeadersFooters">
+            <th class="subheading solid-left-border term1">Текущи</th>
+            <th class="subheading thinTableColumn term1">Срочна</th>
+            <th class="subheading solid-left-border term2">Текущи</th>
+            <th class="subheading thinTableColumn term2">Срочна</th>
+        </tr>
+    </thead>
+    <tbody>
+
+            @foreach (var item in Model.Select(s => new { Subject = s.Subject, SubjectId = s.SubjectId }).Distinct())
+            {
+            <tr class="compactTableRow ">
+                <td class="numVal">
+                    1
+                </td>
+                <td>
+                    @item.Subject
+                </td>
+                <td>
+                    @foreach (var grade in Model.Where(m => m.SubjectId == item.SubjectId && m.isFirstSemester && m.GradeType == GradeType.CURRENT).Select(m => m.Grade))
+                    {
+                        <button class="btn small yellow-casablanca grade ">@grade</button>
+                    }
+                </td>
+                <td>
+                    @(Model.Where(m => m.SubjectId == item.SubjectId && m.GradeType == GradeType.SEMESTER_ONE).Any() ?
+                     Model.Where(m => m.SubjectId == item.SubjectId && m.GradeType == GradeType.SEMESTER_ONE).First().Grade : "")
+                </td>
+                <td>
+                    @foreach (var grade in Model.Where(m => m.SubjectId == item.SubjectId && !m.isFirstSemester && m.GradeType == GradeType.CURRENT).Select(m => m.Grade))
+                    {
+                            <button class="btn small yellow-casablanca grade ">@grade</button>
+                    }
+                </td>
+                <td>
+                    @(Model.Where(m => m.SubjectId == item.SubjectId && m.GradeType == GradeType.SEMESTER_TWO).Any() ?
+                                    Model.Where(m => m.SubjectId == item.SubjectId && m.GradeType == GradeType.SEMESTER_TWO).First().Grade : "")
+                </td>
+                <td>
+                    @(Model.Where(m => m.SubjectId == item.SubjectId && m.GradeType == GradeType.YEAR).Any() ?
+                                        Model.Where(m => m.SubjectId == item.SubjectId && m.GradeType == GradeType.YEAR).First().Grade : "")
+                </td>
+
+            </tr>
+            }
 
 
+        </tbody>
+    </table>
 
 </div>
 
 
-<table>
-    
-    @foreach (var item in Model.Select(s => new {Subject = s.Subject, SubjectId = s.SubjectId}).Distinct())
-    {
-        <tr>
-            <td>
-                @item.Subject
-            </td>
-            <td>
-                @foreach (var test in Model.Where(m => m.SubjectId == item.SubjectId).Select(m => m.Grade))
-                {
-                    @test
-                }
-            </td>
-
-        </tr>
-}
-
-</table>
