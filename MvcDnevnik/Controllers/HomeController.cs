@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MvcDnevnik.Data;
 using MvcDnevnik.Models;
 using System.Diagnostics;
 
@@ -6,20 +8,100 @@ namespace MvcDnevnik.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public const string SessionKeyName = "_Name";
+        public const string SessionKeyAge = "_Age";
+
+
+        private readonly ILogger<HomeController> _logger;
+        private readonly MvcDnevnikContext _context;
+        public HomeController(ILogger<HomeController> logger, MvcDnevnikContext context)
         {
             _logger = logger;
+            _context = context;
+        }
+      
+        
+        
+        public IActionResult Logged()
+        {
+
+            
+            ViewData["UserName"] = HttpContext.Session.GetObject<string>("CurrentUser");
+            if (HttpContext.Session.GetObject<string>("CurrentUser") == null)
+            {
+                
+                return RedirectToRoute("Login");
+            }
+            var Cookies = new Cookies.Cookie(Response.Cookies);
+            Cookies.SetSomething_IDK(new List<string>()
+            {
+                HttpContext.Session.GetObject<string>("CurrentUser"),
+                HttpContext.Session.GetObject<string>("Password")
+            });
+
+
+            List<string> login =new List<string>()
+            {
+                HttpContext.Session.GetObject<string>("CurrentUser"),
+                HttpContext.Session.GetObject<string>("Password")
+            };
+            
+            //Cokies.SetSomething_IDK(login);
+            return View();
         }
 
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
+        
         public IActionResult Index()
         {
+            ViewData["UserName"] = HttpContext.Session.GetString("CurrentUser");
+            var Cookies = new Cookies.Cookie(Request.Cookies);
+            if (Cookies.GetWords().Length > 0)
+            {
+                User user = new User()
+                {
+                    Email = Cookies.GetWords()[0],
+                    Password = Cookies.GetWords()[1]
+                };
+                HttpContext.Session.SetObject("CurrentUser", user.Email);
+                HttpContext.Session.SetObject("Password", user.Password);
+                
+            }
+            foreach (var user in _context.User)
+            {
+                
+                if (user.Email == HttpContext.Session.GetObject<string>("CurrentUser") && user.Password == HttpContext.Session.GetObject<string>("Password"))
+                {
+                    HttpContext.Session.SetObject("CurrentUser", user.Email);
+                    HttpContext.Session.SetObject("Password", user.Password);
+                    return RedirectToAction("Logged");
+                }
+            }
+            
+            
+            
+
+
+            if (HttpContext.Session.GetString("CurrentUser") != null)
+            {
+                return RedirectToAction("Login", "Login");
+            }
+
             return View();
         }
 
         public IActionResult Privacy()
         {
+            //return View();
+            
+            HttpContext.Session.SetString(SessionKeyName, "John Doe");
+            
+
             return View();
         }
 

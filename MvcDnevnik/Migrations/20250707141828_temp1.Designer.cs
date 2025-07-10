@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MvcDnevnik.Data;
 
@@ -11,9 +12,11 @@ using MvcDnevnik.Data;
 namespace MvcDnevnik.Migrations
 {
     [DbContext(typeof(MvcDnevnikContext))]
-    partial class MvcDnevnikContextModelSnapshot : ModelSnapshot
+    [Migration("20250707141828_temp1")]
+    partial class temp1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,9 +44,6 @@ namespace MvcDnevnik.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("SubjectID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.Property<int>("Value")
@@ -132,7 +132,7 @@ namespace MvcDnevnik.Migrations
             modelBuilder.Entity("MvcDnevnik.Models.Grade", b =>
                 {
                     b.HasOne("MvcDnevnik.Models.Student", "Student")
-                        .WithMany("Grades")
+                        .WithMany()
                         .HasForeignKey("StudentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -146,11 +146,6 @@ namespace MvcDnevnik.Migrations
                     b.Navigation("Student");
 
                     b.Navigation("Subject");
-                });
-
-            modelBuilder.Entity("MvcDnevnik.Models.Student", b =>
-                {
-                    b.Navigation("Grades");
                 });
 #pragma warning restore 612, 618
         }

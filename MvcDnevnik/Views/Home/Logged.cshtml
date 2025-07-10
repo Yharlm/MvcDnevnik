@@ -1,0 +1,22 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome @ViewBag.UserName.Replace("\"", "")</h1>
+    <p>Learn about <a href="https://localhost:7208/Grades">Grades</a>.</p>
+    <p>Learn about <a href="https://localhost:7208/Subjects">Subjects</a>.</p>
+    <p>Learn about <a href="https://localhost:7208/Students">Students</a>.</p>
+    <p>Learn about <a href="/TeacherHome/Index">Teachers</a>.</p>
+    <button asp-action="Cook">Cokie test</button>
+    @{if (ViewBag.Names != null && ViewBag.Names.Any())
+        foreach (var item in ViewBag.Names)
+        {
+            <p>@item</p>
+        }
+    }
+    
+</div>

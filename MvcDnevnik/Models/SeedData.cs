@@ -20,7 +20,7 @@ public static class SeedData
             
 
             
-            if (context.Grades.Any())
+            if (context.Grade.Any())
             {
                 return;   // DB has been seeded
             }
@@ -29,7 +29,7 @@ public static class SeedData
             Student neznaiko = new Student();
             //neznaiko.ID = 1;
             neznaiko.Name = "Neznaiko";
-            context.Students.Add(neznaiko);
+            context.Student.Add(neznaiko);
 
             Subject math = new Subject();
             math.Name = "Math";
@@ -39,13 +39,13 @@ public static class SeedData
             bel.Name = "Bulgarian language and literature";
 
 
-            context.Subjects.AddRange(
+            context.Subject.AddRange(
                 math, physics, bel
             );
 
 
 
-            context.Grades.AddRange(
+            context.Grade.AddRange(
                 new Grade
                 {
                     Value = 5,

@@ -10,22 +10,22 @@ using MvcDnevnik.Models;
 
 namespace MvcDnevnik.Controllers
 {
-    public class StudentsController : Controller
+    public class SubjectsController : Controller
     {
         private readonly MvcDnevnikContext _context;
 
-        public StudentsController(MvcDnevnikContext context)
+        public SubjectsController(MvcDnevnikContext context)
         {
             _context = context;
         }
 
-        // GET: Students
+        // GET: Subjects
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Student.ToListAsync());
+            return View(await _context.Subject.ToListAsync());
         }
 
-        // GET: Students/Details/5
+        // GET: Subjects/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace MvcDnevnik.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Student
+            var subject = await _context.Subject
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (student == null)
+            if (subject == null)
             {
                 return NotFound();
             }
 
-            return View(student);
+            return View(subject);
         }
 
-        // GET: Students/Create
+        // GET: Subjects/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Students/Create
+        // POST: Subjects/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name")] Student student)
+        public async Task<IActionResult> Create([Bind("ID,Name")] Subject subject)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(student);
+                _context.Add(subject);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(student);
+            return View(subject);
         }
 
-        // GET: Students/Edit/5
+        // GET: Subjects/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace MvcDnevnik.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Student.FindAsync(id);
-            if (student == null)
+            var subject = await _context.Subject.FindAsync(id);
+            if (subject == null)
             {
                 return NotFound();
             }
-            return View(student);
+            return View(subject);
         }
 
-        // POST: Students/Edit/5
+        // POST: Subjects/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name")] Student student)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name")] Subject subject)
         {
-            if (id != student.ID)
+            if (id != subject.ID)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace MvcDnevnik.Controllers
             {
                 try
                 {
-                    _context.Update(student);
+                    _context.Update(subject);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StudentExists(student.ID))
+                    if (!SubjectExists(subject.ID))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace MvcDnevnik.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(student);
+            return View(subject);
         }
 
-        // GET: Students/Delete/5
+        // GET: Subjects/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +124,34 @@ namespace MvcDnevnik.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Student
+            var subject = await _context.Subject
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (student == null)
+            if (subject == null)
             {
                 return NotFound();
             }
 
-            return View(student);
+            return View(subject);
         }
 
-        // POST: Students/Delete/5
+        // POST: Subjects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var student = await _context.Student.FindAsync(id);
-            if (student != null)
+            var subject = await _context.Subject.FindAsync(id);
+            if (subject != null)
             {
-                _context.Student.Remove(student);
+                _context.Subject.Remove(subject);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool StudentExists(int id)
+        private bool SubjectExists(int id)
         {
-            return _context.Student.Any(e => e.ID == id);
+            return _context.Subject.Any(e => e.ID == id);
         }
     }
 }

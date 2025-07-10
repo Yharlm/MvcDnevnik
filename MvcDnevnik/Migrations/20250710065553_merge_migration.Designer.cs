@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MvcDnevnik.Data;
 
@@ -11,9 +12,11 @@ using MvcDnevnik.Data;
 namespace MvcDnevnik.Migrations
 {
     [DbContext(typeof(MvcDnevnikContext))]
-    partial class MvcDnevnikContextModelSnapshot : ModelSnapshot
+    [Migration("20250710065553_merge_migration")]
+    partial class merge_migration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

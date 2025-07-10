@@ -27,7 +27,7 @@ namespace MvcDnevnik.Controllers
         // GET: Grades
         public async Task<IActionResult> Index()
         {
-            var grades = from g in _context.Grades
+            var grades = from g in _context.Grade
                          //where g.Student.ID == 1
                          select g;
 
@@ -42,7 +42,7 @@ namespace MvcDnevnik.Controllers
                 return NotFound();
             }
 
-            var grade = await _context.Grades
+            var grade = await _context.Grade
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (grade == null)
             {
@@ -82,7 +82,7 @@ namespace MvcDnevnik.Controllers
                 return NotFound();
             }
 
-            var grade = await _context.Grades.FindAsync(id);
+            var grade = await _context.Grade.FindAsync(id);
             if (grade == null)
             {
                 return NotFound();
@@ -136,7 +136,7 @@ namespace MvcDnevnik.Controllers
                 return NotFound();
             }
 
-            var grade = await _context.Grades
+            var grade = await _context.Grade
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (grade == null)
             {
@@ -151,10 +151,10 @@ namespace MvcDnevnik.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var grade = await _context.Grades.FindAsync(id);
+            var grade = await _context.Grade.FindAsync(id);
             if (grade != null)
             {
-                _context.Grades.Remove(grade);
+                _context.Grade.Remove(grade);
             }
 
             await _context.SaveChangesAsync();
@@ -163,13 +163,13 @@ namespace MvcDnevnik.Controllers
 
         private bool GradeExists(int id)
         {
-            return _context.Grades.Any(e => e.ID == id);
+            return _context.Grade.Any(e => e.ID == id);
         }
 
         public IActionResult Student(int id)//this is id of the student
         {
-            var query = from grade in _context.Grades
-                        join subject in _context.Subjects on grade.Subject.ID equals subject.ID
+            var query = from grade in _context.Grade
+                        join subject in _context.Subject on grade.Subject.ID equals subject.ID
                         where grade.Student.ID == id
                         select new SubjectGrade{
                             Subject = subject.Name,

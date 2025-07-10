@@ -14,6 +14,7 @@ namespace MvcDnevnik.Models
     {
         public int ID { get; set; }
         public int Value { get; set; }
+        
         public DateTime Date { get; set; }
         public string Description { get; set; }
 
