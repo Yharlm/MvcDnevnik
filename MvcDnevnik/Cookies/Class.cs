@@ -9,8 +9,8 @@ namespace MvcDnevnik.Cookies
         private const string delimiter = "-";
 
 
-        //Response - Send
-        //Request  - Take
+        //Response - Create edit
+        //Request  - Get
 
 
         private IRequestCookieCollection RequestCookies;
@@ -56,7 +56,7 @@ namespace MvcDnevnik.Cookies
 
         public void Clear()
         {
-            if (GetWords().Length > 0)
+            
             ResponseCookies.Delete(CookieKey);
         }
 

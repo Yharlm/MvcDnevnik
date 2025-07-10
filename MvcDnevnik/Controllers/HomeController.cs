@@ -25,13 +25,21 @@ namespace MvcDnevnik.Controllers
         
         public IActionResult Logged()
         {
+
+            
             ViewData["UserName"] = HttpContext.Session.GetObject<string>("CurrentUser");
             if (HttpContext.Session.GetObject<string>("CurrentUser") == null)
             {
                 
                 return RedirectToRoute("Login");
             }
-            //var Cokies = new Cookies.Cookie(Request.Cookies);
+            var Cookies = new Cookies.Cookie(Response.Cookies);
+            Cookies.SetSomething_IDK(new List<string>()
+            {
+                HttpContext.Session.GetObject<string>("CurrentUser"),
+                HttpContext.Session.GetObject<string>("Password")
+            });
+
 
             List<string> login =new List<string>()
             {
@@ -52,11 +60,22 @@ namespace MvcDnevnik.Controllers
         public IActionResult Index()
         {
             ViewData["UserName"] = HttpContext.Session.GetString("CurrentUser");
-            //var Cokies = new Cookies.Cookie(Request.Cookies);
-            
-            foreach(var user in _context.User)
+            var Cookies = new Cookies.Cookie(Request.Cookies);
+            if (Cookies.GetWords().Length > 0)
             {
-                if (user.Email == HttpContext.Session.GetString("CurrentUser") && user.Password == HttpContext.Session.GetString("Password"))
+                User user = new User()
+                {
+                    Email = Cookies.GetWords()[0],
+                    Password = Cookies.GetWords()[1]
+                };
+                HttpContext.Session.SetObject("CurrentUser", user.Email);
+                HttpContext.Session.SetObject("Password", user.Password);
+                
+            }
+            foreach (var user in _context.User)
+            {
+                
+                if (user.Email == HttpContext.Session.GetObject<string>("CurrentUser") && user.Password == HttpContext.Session.GetObject<string>("Password"))
                 {
                     HttpContext.Session.SetObject("CurrentUser", user.Email);
                     HttpContext.Session.SetObject("Password", user.Password);
