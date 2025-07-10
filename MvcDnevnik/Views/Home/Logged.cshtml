@@ -18,5 +18,12 @@
             <p>@item</p>
         }
     }
-    
+    @if (ViewData["UserAcces"] == "Admin")
+    {
+        <button>
+            <a asp-action="Nuke" style="color:red" >Delete all records</a>
+        </button>
+        
+    }
+
 </div>

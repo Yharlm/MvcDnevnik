@@ -15,7 +15,7 @@
             <button asp-action="">@g.Value</button>
             
         }
-        <a asp-action="CreateRedirect" asp-route-Stu=@item.Student.ID>new grade</a>
+        <a asp-action="CreateRedirect" asp-route-Stu=@item.Student.ID asp-route-Sub="@ViewData["SubjectID"]">new grade</a>
     </h1>
     
 

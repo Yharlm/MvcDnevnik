@@ -1,15 +1,16 @@
 ﻿
 
-public enum GradeType: int
-{
-    CURRENT = 0,
-    SEMESTER_ONE = 1,
-    SEMESTER_TWO = 2,
-    YEAR = 3
-}
+
 
 namespace MvcDnevnik.Models
 {
+    public enum GradeType : int
+    {
+        CURRENT = 0,
+        SEMESTER_ONE = 1,
+        SEMESTER_TWO = 2,
+        YEAR = 3
+    }
     public class Grade
     {
         public int ID { get; set; }

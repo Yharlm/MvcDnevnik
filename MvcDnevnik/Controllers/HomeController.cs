@@ -26,7 +26,11 @@ namespace MvcDnevnik.Controllers
         public IActionResult Logged()
         {
 
-            
+            if (HttpContext.Session.GetObject<string>("CurrentUser") == "Admin@mail.com")
+            {
+                ViewData["UserAcces"] = "Admin";
+                
+            }
             ViewData["UserName"] = HttpContext.Session.GetObject<string>("CurrentUser");
             if (HttpContext.Session.GetObject<string>("CurrentUser") == null)
             {
@@ -103,6 +107,18 @@ namespace MvcDnevnik.Controllers
             
 
             return View();
+        }
+
+        public IActionResult Nuke() 
+        { 
+            HttpContext.Session.Clear();
+            var Cookies = new Cookies.Cookie(Response.Cookies);
+            Cookies.Clear();
+            _context.Subject.RemoveRange(_context.Subject);
+            _context.Student.RemoveRange(_context.Student);
+            _context.Grade.RemoveRange(_context.Grade);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

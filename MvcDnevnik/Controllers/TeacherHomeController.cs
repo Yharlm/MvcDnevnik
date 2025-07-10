@@ -22,7 +22,7 @@ namespace MvcDnevnik.Controllers
 
         public async Task<IActionResult> Subject(int Sub)
         {
-            HttpContext.Session.SetObject<int>("SubjectID", Sub);
+           //HttpContext.Session.SetObject<int>("SubjectID", Sub);
 
 
 
@@ -42,13 +42,14 @@ namespace MvcDnevnik.Controllers
                 });
 
             }
-
+            ViewData["SubjectID"] = Sub;
             return View(list);
 
         }
-
-        public IActionResult CreateRedirect(int Stu)
+        
+        public IActionResult CreateRedirect(int Stu,int Sub)
         {
+            HttpContext.Session.SetObject<int>("SubjectID", Sub);
             HttpContext.Session.SetObject<int>("StudentID", Stu);
             return RedirectToAction(nameof(Create));
         }
@@ -59,7 +60,7 @@ namespace MvcDnevnik.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Value,Date,Description")] Grade grade)
+        public async Task<IActionResult> Create([Bind("ID,Value,Date,Description,Type")] Grade grade)
         {
             var user = _context.User.FirstOrDefault();
 
@@ -70,18 +71,29 @@ namespace MvcDnevnik.Controllers
             grade.Subject = _context.Subject.FirstOrDefault(s => s.ID == SubjectID);
             grade.Student = _context.Student.FirstOrDefault(s => s.ID == StudentID);
 
-            if (_context.Student.Contains(grade.Student) && _context.Subject.Contains(grade.Subject))
+            if (grade.Value > 0 && grade.Value<=6)
             {
-                _context.Add(grade);
-                await _context.SaveChangesAsync();
-                return Redirect("/TeacherHome/Subject?Sub=" + SubjectID);
+                if (_context.Student.Contains(grade.Student) && _context.Subject.Contains(grade.Subject))
+                {
+                    _context.Add(grade);
+                    await _context.SaveChangesAsync();
+                    return Redirect("/TeacherHome/Subject?Sub=" + SubjectID);
 
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid Student or Subject");
+                    return View(grade);
+                }
             }
             else
             {
-                ModelState.AddModelError("", "Invalid Student or Subject");
+                ModelState.AddModelError("", "Grade must be between 1 and 6");
                 return View(grade);
             }
+
+            
+            
 
 
 
