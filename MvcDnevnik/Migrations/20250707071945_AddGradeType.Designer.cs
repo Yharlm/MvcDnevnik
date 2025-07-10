@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MvcDnevnik.Data;
 
@@ -11,9 +12,11 @@ using MvcDnevnik.Data;
 namespace MvcDnevnik.Migrations
 {
     [DbContext(typeof(MvcDnevnikContext))]
-    partial class MvcDnevnikContextModelSnapshot : ModelSnapshot
+    [Migration("20250707071945_AddGradeType")]
+    partial class AddGradeType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,7 +58,7 @@ namespace MvcDnevnik.Migrations
 
                     b.HasIndex("SubjectID");
 
-                    b.ToTable("Grade");
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("MvcDnevnik.Models.Student", b =>
@@ -72,7 +75,7 @@ namespace MvcDnevnik.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Student");
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("MvcDnevnik.Models.Subject", b =>
@@ -89,50 +92,13 @@ namespace MvcDnevnik.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Subject");
-                });
-
-            modelBuilder.Entity("MvcDnevnik.Models.User", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Temp")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("User");
+                    b.ToTable("Subjects");
                 });
 
             modelBuilder.Entity("MvcDnevnik.Models.Grade", b =>
                 {
                     b.HasOne("MvcDnevnik.Models.Student", "Student")
-                        .WithMany("Grades")
+                        .WithMany()
                         .HasForeignKey("StudentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -146,11 +112,6 @@ namespace MvcDnevnik.Migrations
                     b.Navigation("Student");
 
                     b.Navigation("Subject");
-                });
-
-            modelBuilder.Entity("MvcDnevnik.Models.Student", b =>
-                {
-                    b.Navigation("Grades");
                 });
 #pragma warning restore 612, 618
         }

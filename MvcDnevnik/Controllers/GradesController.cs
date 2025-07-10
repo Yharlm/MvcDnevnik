@@ -27,7 +27,11 @@ namespace MvcDnevnik.Controllers
         // GET: Grades
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Grade.ToListAsync());
+            var grades = from g in _context.Grade
+                         //where g.Student.ID == 1
+                         select g;
+
+            return View(grades.ToList());
         }
 
         // GET: Grades/Details/5
@@ -161,5 +165,27 @@ namespace MvcDnevnik.Controllers
         {
             return _context.Grade.Any(e => e.ID == id);
         }
+
+        public IActionResult Student(int id)//this is id of the student
+        {
+            var query = from grade in _context.Grade
+                        join subject in _context.Subject on grade.Subject.ID equals subject.ID
+                        where grade.Student.ID == id
+                        select new SubjectGrade{
+                            Subject = subject.Name,
+                            SubjectId = subject.ID,
+                            Grade = grade.Value, 
+                            GradeType = grade.Type,
+                            date = grade.Date,
+                        };
+
+            List<SubjectGrade> resultList = query.ToList();
+            var grades = resultList.Select(g => g.Subject).Distinct().ToList();
+
+            ViewData["grades"] =  grades;
+
+            return View(resultList);
+        }
+
     }
 }

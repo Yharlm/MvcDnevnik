@@ -57,7 +57,11 @@ namespace MvcDnevnik
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-
+/*
+            app.MapControllerRoute(
+                name: "viewgrades",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
+*/
             app.Run();
         }
     }
