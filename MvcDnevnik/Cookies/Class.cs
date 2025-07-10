@@ -33,7 +33,7 @@ namespace MvcDnevnik.Cookies
             string cookieValue = String.Join(delimiter, Words);
             CookieOptions cookieOptions = new CookieOptions
             {
-                Expires = DateTimeOffset.Now.AddMinutes(10)
+                Expires = DateTimeOffset.Now.AddDays(7)
             };
 
             Clear();

@@ -58,6 +58,8 @@ namespace MvcDnevnik.Controllers
         public IActionResult LogOut()
         {
             HttpContext.Session.Clear();
+            var Cookies = new Cookies.Cookie(Response.Cookies);
+            Cookies.Clear();
             return RedirectToAction("Index", "Home");
         }
         

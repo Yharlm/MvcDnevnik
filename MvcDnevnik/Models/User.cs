@@ -3,6 +3,12 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace MvcDnevnik.Models
 {
+    public enum UserRole
+    {
+        Teacher,
+        Student,
+        Parent
+    }
     public class User
     {
         public int ID { get; set; }
@@ -11,7 +17,7 @@ namespace MvcDnevnik.Models
 
         public string Password { get; set; }
 
-        public string Role { get; set; } // "Teacher", "Student", "Parent"
+        public UserRole Role { get; set; } // "Teacher", "Student", "Parent"
 
         public string Email { get; set; }
 
