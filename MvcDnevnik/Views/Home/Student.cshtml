@@ -1,0 +1,46 @@
+﻿<head>
+    <style>
+        .bigButton {
+            width: 200px;
+            height: 130px;
+            border-width: 4px;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 25px
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr style="align-items: center;">
+            <th>
+                <a asp-action="Student" asp-controller="Grades" asp-route-id="@ViewData["UserID"]">
+
+                    <button class="bigButton">
+                    
+                        Grades
+                   
+                    
+                    </button>
+				</a>
+            </th>
+            <th>
+                <button class="bigButton" onclick="">
+                    Absence
+                </button>
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <button class="bigButton">
+                    Remarks
+                </button>
+            </th>
+            <th>
+                <button class="bigButton">
+                    Exams
+                </button>
+            </th>
+        </tr>
+    </table>
+</body>

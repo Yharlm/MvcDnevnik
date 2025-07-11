@@ -2,6 +2,8 @@
 
 
 
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 namespace MvcDnevnik.Models
 {
     public enum GradeType : int
@@ -23,5 +25,16 @@ namespace MvcDnevnik.Models
 
         public Student Student { get; set; }
         public Subject Subject { get; set; }
+
+        public bool IsFirstSemester
+        {
+            get
+            {
+                return Date.Month >= 9 || Date.Month <= 6;
+            }
+            
+        }
     }
+
+
 }

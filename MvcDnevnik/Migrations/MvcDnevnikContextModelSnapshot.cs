@@ -55,7 +55,7 @@ namespace MvcDnevnik.Migrations
 
                     b.HasIndex("SubjectID");
 
-                    b.ToTable("Grade");
+                    b.ToTable("Grade", (string)null);
                 });
 
             modelBuilder.Entity("MvcDnevnik.Models.Student", b =>
@@ -72,7 +72,7 @@ namespace MvcDnevnik.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Student");
+                    b.ToTable("Student", (string)null);
                 });
 
             modelBuilder.Entity("MvcDnevnik.Models.Subject", b =>
@@ -89,7 +89,7 @@ namespace MvcDnevnik.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Subject");
+                    b.ToTable("Subject", (string)null);
                 });
 
             modelBuilder.Entity("MvcDnevnik.Models.User", b =>
@@ -125,7 +125,7 @@ namespace MvcDnevnik.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("User");
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("MvcDnevnik.Models.Grade", b =>

@@ -2,15 +2,20 @@
 
 @{
     ViewData["Title"] = "Create";
+    
+    
+     // Assuming this is the student ID for the grade
 }
 
 <h1>Create</h1>
 
 <h4>Grade</h4>
+
+<h1>@ViewData["SubjectID"] / @ViewData["StudentID"]</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" asp-route-Sub="@ViewData["SubjectID"]" asp-route-Stu="@ViewData["StudentID"]">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Value" class="control-label"></label>

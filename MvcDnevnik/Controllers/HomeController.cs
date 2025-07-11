@@ -21,7 +21,11 @@ namespace MvcDnevnik.Controllers
             _context = context;
         }
       
-        
+        public IActionResult Student()
+        {
+            ViewData["UserID"] = HttpContext.Session.GetObject<int>("UserID");
+            return View();
+        }
         
         public IActionResult Logged()
         {
@@ -73,10 +77,12 @@ namespace MvcDnevnik.Controllers
                 {
                     Email = Cookies.GetWords()[0],
                     Password = Cookies.GetWords()[1]
+                    
                 };
                 HttpContext.Session.SetObject("CurrentUser", user.Email);
                 HttpContext.Session.SetObject("Password", user.Password);
                 
+
             }
             foreach (var user in _context.User)
             {
@@ -85,6 +91,7 @@ namespace MvcDnevnik.Controllers
                 {
                     HttpContext.Session.SetObject("CurrentUser", user.Email);
                     HttpContext.Session.SetObject("Password", user.Password);
+                    HttpContext.Session.SetObject("UserID", user.ID);
                     return RedirectToAction("Logged");
                 }
             }
@@ -112,13 +119,27 @@ namespace MvcDnevnik.Controllers
         }
 
         public IActionResult Nuke() 
-        { 
+        {
+            User admin = new User()
+            {
+                ID = 1,
+                Email = "Admin@mail.com",
+                Name = "Admin",
+                Password = "Admin",
+                Role = UserRole.Teacher,
+
+                PhoneNumber = "0000000000",
+                Temp = "0000"
+            };
+            
             HttpContext.Session.Clear();
             var Cookies = new Cookies.Cookie(Response.Cookies);
             Cookies.Clear();
             _context.Subject.RemoveRange(_context.Subject);
             _context.Student.RemoveRange(_context.Student);
             _context.Grade.RemoveRange(_context.Grade);
+            _context.User.RemoveRange(_context.User);
+            _context.User.Add(admin);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }

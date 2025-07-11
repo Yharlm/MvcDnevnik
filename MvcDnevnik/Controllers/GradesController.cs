@@ -170,7 +170,7 @@ namespace MvcDnevnik.Controllers
         {
             var query = from grade in _context.Grade
                         join subject in _context.Subject on grade.Subject.ID equals subject.ID
-                        where grade.Student.ID == id
+                        where grade.Student.UserID == id
                         select new SubjectGrade{
                             Subject = subject.Name,
                             SubjectId = subject.ID,

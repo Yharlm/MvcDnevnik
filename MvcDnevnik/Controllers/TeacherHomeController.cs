@@ -43,33 +43,31 @@ namespace MvcDnevnik.Controllers
 
             }
             ViewData["SubjectID"] = Sub;
+            
             return View(list);
 
         }
         
-        public IActionResult CreateRedirect(int Stu,int Sub)
-        {
-            HttpContext.Session.SetObject<int>("SubjectID", Sub);
-            HttpContext.Session.SetObject<int>("StudentID", Stu);
-            return RedirectToAction(nameof(Create));
-        }
+       
 
-        public IActionResult Create()
+        public IActionResult Create(int Sub,int Stu)
         {
+            ViewData["SubjectID"] = Sub;
+            ViewData["StudentID"] = Stu;
+
             return View();
         }
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Value,Date,Description,Type")] Grade grade)
+        public async Task<IActionResult> Create([Bind("ID,Value,Date,Description,Type")] Grade grade,int Sub,int Stu)
         {
             var user = _context.User.FirstOrDefault();
 
             // Assuming Temp is formatted as "subjectId/studentId"
-            int StudentID = HttpContext.Session.GetObject<int>("StudentID");
-            int SubjectID = HttpContext.Session.GetObject<int>("SubjectID"); // Assuming Temp is formatted as "subjectId/studentId"
-
-            grade.Subject = _context.Subject.FirstOrDefault(s => s.ID == SubjectID);
-            grade.Student = _context.Student.FirstOrDefault(s => s.ID == StudentID);
+            
+            grade.Subject = _context.Subject.FirstOrDefault(x => x.ID == Sub);
+            grade.Student = _context.Student.FirstOrDefault(x => x.ID == Stu);
 
             if (grade.Value > 0 && grade.Value<=6)
             {
@@ -77,7 +75,7 @@ namespace MvcDnevnik.Controllers
                 {
                     _context.Add(grade);
                     await _context.SaveChangesAsync();
-                    return Redirect("/TeacherHome/Subject?Sub=" + SubjectID);
+                    return Redirect("/TeacherHome/Subject?Sub=" + Sub);
 
                 }
                 else

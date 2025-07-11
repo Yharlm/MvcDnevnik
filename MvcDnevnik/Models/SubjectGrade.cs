@@ -17,7 +17,7 @@
         {
             get 
             {
-                return date.Month >= 9 && date.Month <= 6;
+                return date.Month >= 9 || date.Month <= 6;
             }
         }
     }

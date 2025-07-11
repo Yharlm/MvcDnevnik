@@ -33,6 +33,7 @@ namespace MvcDnevnik.Controllers
                 {
                     HttpContext.Session.SetObject("CurrentUser", u.Email);
                     HttpContext.Session.SetObject("Password", u.Password);
+                    HttpContext.Session.SetObject("UserID", u.ID);
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -60,10 +61,24 @@ namespace MvcDnevnik.Controllers
             user.PhoneNumber = "0000000000"; // Default phone number
             user.Temp = "0000"; // Default temporary code
             
+            
+            
+
             _context.Add(user);
             _context.SaveChanges();
+            if (user.Role == MvcDnevnik.Models.UserRole.Student)
+            {
+                _context.Student.Add(new Student
+                {
+                    UserID = user.ID,
+                    Name = user.Name
+
+                });
+                _context.SaveChanges();
+            }
             HttpContext.Session.SetObject("CurrentUser", user.Email);
             HttpContext.Session.SetObject("Password", user.Password);
+            HttpContext.Session.SetObject("UserID", user.ID);
             return RedirectToAction("Index", "Home");
         }
         
