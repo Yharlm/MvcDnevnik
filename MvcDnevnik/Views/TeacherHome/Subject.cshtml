@@ -67,7 +67,8 @@
                     
                 <tr>
                     <td>
-                        @item.Student.Name <a asp-action="Create" asp-route-Stu=@item.Student.ID asp-route-Sub="@ViewData["SubjectID"]">+</a>
+                            @item.Student.Name <a asp-action="Create" asp-route-Stu=@item.Student.ID asp-route-Sub="@ViewData["SubjectID"]">+</a><a asp-action="Create" asp-route-Stu=@item.Student.ID asp-route-Sub="@ViewData["SubjectID"]"> Complain</a>
+                        
 
                     </td>
                     

@@ -29,7 +29,14 @@ namespace MvcDnevnik.Controllers
         
         public IActionResult Logged()
         {
+            foreach (var user in _context.User)
+            {
+                if (user.Role != UserRole.Teacher)
+                {
+                   return RedirectToAction("Student", "Home");
+                }
 
+            }
             if (HttpContext.Session.GetObject<string>("CurrentUser") == "Admin@mail.com")
             {
                 ViewData["UserAcces"] = "Admin";
@@ -122,7 +129,7 @@ namespace MvcDnevnik.Controllers
         {
             User admin = new User()
             {
-                ID = 1,
+                
                 Email = "Admin@mail.com",
                 Name = "Admin",
                 Password = "Admin",
