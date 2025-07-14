@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MvcDnevnik.Data;
 using MvcDnevnik.Models;
+using System.Diagnostics;
 using SessionExtensions = MvcDnevnik.Models.SessionExtensions;
 
 namespace MvcDnevnik.Controllers
@@ -58,6 +59,29 @@ namespace MvcDnevnik.Controllers
             return View();
         }
         
+        public IActionResult Complaint(int Sub, int Stu)
+        {
+            ViewData["SubjectID"] = Sub;
+            ViewData["StudentID"] = Stu;
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Complaint([Bind("ID,Status,ComplaintText,Date")] Complaints Complaint,int Sub, int Stu)
+        {
+            Complaint.Subject = _context.Subject.FirstOrDefault(x => x.ID == Sub);
+            Complaint.Student = _context.Student.FirstOrDefault(x => x.ID == Stu);
+
+            _context.Add(Complaint);
+            _context.SaveChanges();
+
+            
+            return RedirectToAction("Subject","TeacherHome",null,$"Sub={Sub}");
+        }
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Value,Date,Description,Type")] Grade grade,int Sub,int Stu)

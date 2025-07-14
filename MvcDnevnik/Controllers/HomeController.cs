@@ -29,14 +29,7 @@ namespace MvcDnevnik.Controllers
         
         public IActionResult Logged()
         {
-            foreach (var user in _context.User)
-            {
-                if (user.Role != UserRole.Teacher)
-                {
-                   return RedirectToAction("Student", "Home");
-                }
-
-            }
+            
             if (HttpContext.Session.GetObject<string>("CurrentUser") == "Admin@mail.com")
             {
                 ViewData["UserAcces"] = "Admin";
@@ -61,9 +54,16 @@ namespace MvcDnevnik.Controllers
                 HttpContext.Session.GetObject<string>("CurrentUser"),
                 HttpContext.Session.GetObject<string>("Password")
             };
-            
-            //Cokies.SetSomething_IDK(login);
-            return View();
+			foreach (var user in _context.User)
+			{
+				if (user.Role != UserRole.Teacher && user.ID == HttpContext.Session.GetObject<int>("UserID"))
+				{
+					return RedirectToAction("Student", "Home");
+				}
+
+			}
+			//Cokies.SetSomething_IDK(login);
+			return View();
         }
 
         public IActionResult LogOut()

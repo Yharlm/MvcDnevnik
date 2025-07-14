@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using MvcDnevnik.Data;
 using MvcDnevnik.Models;
 
@@ -170,7 +171,7 @@ namespace MvcDnevnik.Controllers
         {
             var query = from grade in _context.Grade
                         join subject in _context.Subject on grade.Subject.ID equals subject.ID
-                        where grade.Student.UserID == id
+                        where grade.Student.User_ID_Student == id
                         select new SubjectGrade{
                             Subject = subject.Name,
                             SubjectId = subject.ID,

@@ -2,14 +2,15 @@
 
 namespace MvcDnevnik.Models
 {
+    public enum ComplaintStatus
+    {
+        Positive,
+        Negative
+    }
     public class Complaints
     {
 
-        public enum ComplaintStatus
-        {
-            Positive,
-            Negative
-        }
+        
 
         public int ID { get; set; }
         public Student Student { get; set; }

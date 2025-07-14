@@ -3,13 +3,36 @@
 *@
 
 
-@{
-    <h1>Subjects list</h1>
-    foreach (var item in Model)
-    {
-
-        <a asp-action="Subject" asp-route-Sub="@item.ID"> @item.Name</a>
-        <br>
-
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
     }
-}
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    
+</style>
+
+<table>
+    <th>
+        Subject
+
+    </th>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a asp-action="Subject" asp-route-Sub="@item.ID">@item.Name</a>
+            </td>
+            
+        </tr>
+    }
+</table>
+    
+

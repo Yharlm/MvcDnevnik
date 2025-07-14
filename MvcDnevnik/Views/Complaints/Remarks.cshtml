@@ -1,0 +1,76 @@
+﻿@model IEnumerable<MvcDnevnik.Models.Complaint_Subject>
+
+@{
+    ViewData["Title"] = "Index";
+    
+}
+
+
+
+
+<div class="text-center">
+    <h1 class="display-4">Оценки</h1>
+
+    <table class="table table-bordered table-hover table-striped" id="tableGrades">
+        <thead>
+            <tr class="tableHeadersFooters">
+
+				<th rowspan="2"> Предмет </th>
+                <th rowspan="2"> Коментар </th>
+                <th rowspan="2"> Дата </th>
+            </tr>
+            <tr class="tableHeadersFooters">
+                
+                <th class="subheading thinTableColumn term2">Отзиви</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            @foreach(var remark in Model)
+            {
+                
+                <tr>
+
+                    <td align="left">
+                        <h1 style="font-size= 12px;">@remark.Subject.Name</h1>
+                    </td>
+                    <td>
+                        @foreach (var comp in remark.Complaints)
+                        {
+                            
+                            if (comp.Status == ComplaintStatus.Negative)
+                            {
+                                <button type="button"
+                                        onclick="document.getElementById('@remark.Subject.Name').innerHTML = '@comp.ComplaintText';document.getElementById('@(remark.Subject.Name)Date').innerHTML = '@comp.Date'"
+                                
+                                style="background-color:indianred"> - </button>
+                            }
+                            else
+                            {
+                                <button type="button"
+                                        onclick="document.getElementById('@remark.Subject.Name').innerHTML = '@comp.ComplaintText';document.getElementById('@(remark.Subject.Name)Date').innerHTML = '@comp.Date'"
+                                        style="background-color:mediumseagreen">
+                                    +
+                                </button>
+                            }
+
+                        }
+                        
+                    </td>
+                    <td>
+                        <p id="@remark.Subject.Name"></p>
+                    </td>
+                    <td>
+                        <p id="@(remark.Subject.Name)Date"></p>
+                    </td>
+
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+
+</div>
+
+

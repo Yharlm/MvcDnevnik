@@ -4,7 +4,7 @@ namespace MvcDnevnik.Models
 {
     public class Student
     {
-        public int UserID { get; set; }
+        public int User_ID_Student { get; set; }
         public int ID { get; set; }
         public string Name { get; set; }
 

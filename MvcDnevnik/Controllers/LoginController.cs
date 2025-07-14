@@ -70,7 +70,7 @@ namespace MvcDnevnik.Controllers
             {
                 _context.Student.Add(new Student
                 {
-                    UserID = user.ID,
+                    User_ID_Student = user.ID,
                     Name = user.Name
 
                 });

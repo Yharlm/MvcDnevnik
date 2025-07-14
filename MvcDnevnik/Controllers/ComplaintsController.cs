@@ -153,5 +153,24 @@ namespace MvcDnevnik.Controllers
         {
             return _context.Complaints.Any(e => e.ID == id);
         }
+
+        public IActionResult Remarks(int ID)
+        {
+            List<Complaint_Subject> complaint_Subject = new List<Complaint_Subject>();
+                
+            foreach(var sub in _context.Subject)
+            {
+                Complaint_Subject comp = new Complaint_Subject();
+                comp.Subject = sub;
+                foreach(var com in from c in _context.Complaints where c.Subject.ID == sub.ID where c.Student.User_ID_Student == ID select c)
+                {
+                    comp.Complaints.Add(com);
+                }
+                complaint_Subject.Add(comp);
+            }
+
+            
+            return View(complaint_Subject);
+        }
     }
 }
